@@ -14,7 +14,7 @@ public class ConfigurationExample extends Configuration {
     public static String DATABASE_PASS="";
     public static String UPLOAD_FILE_PATH="";
     public static String DATABASE_SERVER_URL="";
-
+    public static String URL_UPLOAD_FILE="";
 
     @NotEmpty
     private String filePath;
@@ -28,6 +28,8 @@ public class ConfigurationExample extends Configuration {
     private String databasename;
     @NotEmpty
     private String template;
+    @NotEmpty
+    private String urlUploadFile;
 
     @NotEmpty
     private String defaultName = "Stranger";
@@ -99,6 +101,16 @@ public class ConfigurationExample extends Configuration {
     @JsonProperty
     public String getDatabasurlserver() {
         return databasurlserver;
+    }
+
+    @JsonProperty
+    public void setUrlUploadFile(String urlUploadFile) {
+        this.urlUploadFile=urlUploadFile;
+        this.URL_UPLOAD_FILE=urlUploadFile;
+    }
+    @JsonProperty
+    public String getUrlUploadFile() {
+        return this.urlUploadFile;
     }
 
 

@@ -30,7 +30,7 @@ public class Migracion extends Application<ConfigurationExample> {
 
        if(args.length > 0) new Migracion().run(args);
        else{
-        new Migracion().run(new String[] { "server","./src/main/java/com/itec/migracion/config.yml" });
+        new Migracion().run(new String[] { "server","./src/main/java/migracion/config.yml" });
            System.err.println("qui");
        }
     }
@@ -41,7 +41,7 @@ public class Migracion extends Application<ConfigurationExample> {
         t.getTemplate();
         t.getDefaultName();
         t.getFilePath();
-        configureCors(e);
+        //configureCors(e);
 
         e.jersey().register(ConfigServices.class);
 
