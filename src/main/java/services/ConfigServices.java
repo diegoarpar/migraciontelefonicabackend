@@ -32,7 +32,7 @@ public class ConfigServices {
     private AdjuntarArchivos adjuntarArchivos= new AdjuntarArchivos();
 
     @POST
-    @Produces(MediaType.TEXT_PLAIN)
+    //@Produces(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/insert-file")
     @PermitAll

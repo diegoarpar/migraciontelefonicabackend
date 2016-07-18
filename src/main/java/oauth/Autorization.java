@@ -24,7 +24,7 @@ public class Autorization implements Authorizer<User> {
 
     @Override
     public boolean authorize(User u, String role) {
-        System.out.println(role);
+        /*System.out.println(role);
         //FactoryMongo  f= new FactoryMongo();
          String token = UUID.randomUUID().toString();
          Token t = new Token();
@@ -32,12 +32,12 @@ public class Autorization implements Authorizer<User> {
         if (token.equals("35b6b8202ca92164151af7e2d7ea667b6bf01968d28400899fd1f0cdc5f51aa1")){
             Response.status(Response.Status.ACCEPTED);
             return  true;
-            
+
         }
          //if(f.isValidUser(u)){
          //    f.insertToken(t, u);
          //    return true;
-         //}
+         //}*/
         return true;
     }
 }

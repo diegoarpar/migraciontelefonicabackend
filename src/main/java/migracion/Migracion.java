@@ -41,7 +41,7 @@ public class Migracion extends Application<ConfigurationExample> {
         t.getTemplate();
         t.getDefaultName();
         t.getFilePath();
-        //configureCors(e);
+        configureCors(e);
 
         e.jersey().register(ConfigServices.class);
 

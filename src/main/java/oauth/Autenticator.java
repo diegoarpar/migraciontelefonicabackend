@@ -20,7 +20,7 @@ import java.io.IOException;
 public class Autenticator implements Authenticator<String, User> {
     @Override
     public com.google.common.base.Optional<User> authenticate(String token) throws AuthenticationException {
-        if(true){
+        /*if(true){
             Token t = new Token();
             t.setToken(token);
             Response.status(Response.Status.ACCEPTED);
@@ -39,7 +39,7 @@ public class Autenticator implements Authenticator<String, User> {
             return  com.google.common.base.Optional.of(new User("diego",t,"123"));
 
         }
-/*       if (f.isValidToken(t)) {
+       if (f.isValidToken(t)) {
             Response.status(Response.Status.ACCEPTED);
             return Optional.of(new User("diego",t,"123"));
         }else{
@@ -49,7 +49,7 @@ public class Autenticator implements Authenticator<String, User> {
         return Optional.absent();
     */
      Response.status(Response.Status.ACCEPTED);
-            return  com.google.common.base.Optional.of(new User("diego",t,"123"));
+            return  com.google.common.base.Optional.of(new User("diego",new Token(),"123"));
     }
 
 
