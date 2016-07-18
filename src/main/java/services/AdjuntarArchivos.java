@@ -1,5 +1,6 @@
 package services;
 
+import com.google.common.io.Files;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
@@ -22,29 +23,33 @@ import java.io.UnsupportedEncodingException;
  */
 
     public class AdjuntarArchivos {
-
+        private HttpClient httpclient = new DefaultHttpClient();
+        private String responseBody="";
+        private  HttpEntity entity;
+        private File file;
+        private HttpPost post;
+        private ResponseHandler<String> responseHandler = new BasicResponseHandler();
         public String AdjuntarArchivos(JSONObject json, String token, String ubicacionArchivo, String urlAdjuntar) throws UnsupportedEncodingException, IOException {
             try {
-            HttpClient httpclient = new DefaultHttpClient();
-            String responseBody="";
-            token=token.replace("Bearer ","");
-            HttpEntity entity = MultipartEntityBuilder.create()
+
+                token=token.replace("Bearer ","");
+                file = new File(ubicacionArchivo);
+                json.put("name",file.getName());
+                json.put("fileType", Files.getFileExtension(file.getName()));
+                json.put("fileSize",file.length());
+                entity = MultipartEntityBuilder.create()
                     .addTextBody("model", json.toString())
-                    .addBinaryBody("file", (new File(ubicacionArchivo)))
+                    .addBinaryBody("file", file)
                     .build();
-
-            HttpPost post = new HttpPost(urlAdjuntar);
-            post.setHeader("Accept", "application/json, text/plain, */*");
-            post.setHeader("Accept-Encoding", "gzip, deflate");
-            post.setHeader("Accept-Language", "es-ES,es;q=0.8,en-US;q=0.5,en;q=0.3");
-
-            post.addHeader("Authorization",token);
-            post.setEntity(entity);
-            //System.out.println("Requesting : " + post.getRequestLine());
-            ResponseHandler<String> responseHandler = new BasicResponseHandler();
-            responseBody = httpclient.execute(post, responseHandler);
-
-            //System.out.println("responseBody : " + responseBody);
+                post = new HttpPost(urlAdjuntar);
+                post.setHeader("Accept", "application/json, text/plain, */*");
+                post.setHeader("Accept-Encoding", "gzip, deflate");
+                post.setHeader("Accept-Language", "es-ES,es;q=0.8,en-US;q=0.5,en;q=0.3");
+                post.addHeader("Authorization",token);
+                post.setEntity(entity);
+                //System.out.println("Requesting : " + post.getRequestLine());
+                responseBody = httpclient.execute(post, responseHandler);
+                //System.out.println("responseBody : " + responseBody);
 
 
             } catch (Exception e) {
