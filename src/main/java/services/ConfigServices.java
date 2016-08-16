@@ -53,7 +53,48 @@ public class ConfigServices {
         return  "FIRMANDO";
     }
 
+    @POST
+    //@Produces(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/insert-log")
+    @PermitAll
+    public String insertLog(@Context HttpServletRequest req) throws IOException {
 
+        fillCriterialFromString(req.getQueryString());
+        StringBuilder stringBuilder = new StringBuilder();
+        BufferedReader br = new BufferedReader(new InputStreamReader(req.getInputStream()));
+        String read;
+        while((read=br.readLine()) != null) {
+            stringBuilder.append(read);
+        }
+        br.close();
+        JSONObject jsonObj = new JSONObject(stringBuilder.toString());
+
+        //fm.insertGarantiasParametricValues(stringBuilder.toString());
+
+        return  "FIRMANDO";
+    }
+    @GET
+    //@Produces(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/insert-log")
+    @PermitAll
+    public String getLog(@Context HttpServletRequest req, @QueryParam(value="startDate") String startDate,@QueryParam(value="endDate") String endDate) throws IOException {
+
+        fillCriterialFromString(req.getQueryString());
+        StringBuilder stringBuilder = new StringBuilder();
+        BufferedReader br = new BufferedReader(new InputStreamReader(req.getInputStream()));
+        String read;
+        while((read=br.readLine()) != null) {
+            stringBuilder.append(read);
+        }
+        br.close();
+        JSONObject jsonObj = new JSONObject(stringBuilder.toString());
+        //get date
+        //fm.insertGarantiasParametricValues(stringBuilder.toString());
+
+        return  "FIRMANDO";
+    }
 
     /*OTHER METHOD*/
     private void fillCriterialFromString( String queryString){
