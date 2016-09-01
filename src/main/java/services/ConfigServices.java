@@ -3,7 +3,9 @@ package services;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.mongodb.DBObject;
 import configuration.ConfigurationExample;
+import db.FactoryMongo;
 import jdk.nashorn.internal.parser.JSONParser;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -16,7 +18,9 @@ import javax.ws.rs.core.MediaType;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -27,10 +31,11 @@ import java.util.Properties;
 @Produces(MediaType.APPLICATION_JSON)
 
 
+
 public class ConfigServices {
     HashMap<String, String> criterial= new HashMap<>();
     private AdjuntarArchivos adjuntarArchivos= new AdjuntarArchivos();
-
+    private FactoryMongo db = new FactoryMongo();
     @POST
     //@Produces(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -47,10 +52,10 @@ public class ConfigServices {
         }
         br.close();
         JSONObject jsonObj = new JSONObject(stringBuilder.toString());
-
-        //fm.insertGarantiasParametricValues(stringBuilder.toString());
+        jsonObj.put("dateLog",new Date());
+        db.insertLog(jsonObj.toString());
         adjuntarArchivos.AdjuntarArchivos(jsonObj,req.getHeader("authorization"), ConfigurationExample.UPLOAD_FILE_PATH+ jsonObj.get("name"), ConfigurationExample.URL_UPLOAD_FILE);
-        return  "FIRMANDO";
+        return   jsonObj.toString();
     }
 
     @POST
@@ -70,16 +75,17 @@ public class ConfigServices {
         br.close();
         JSONObject jsonObj = new JSONObject(stringBuilder.toString());
 
-        //fm.insertGarantiasParametricValues(stringBuilder.toString());
+        jsonObj.put("dateLog",new Date());
+        db.insertLog(jsonObj.toString());
 
-        return  "FIRMANDO";
+        return  jsonObj.toString();
     }
     @GET
     //@Produces(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/insert-log")
     @PermitAll
-    public String getLog(@Context HttpServletRequest req, @QueryParam(value="startDate") String startDate,@QueryParam(value="endDate") String endDate) throws IOException {
+    public List<DBObject> getLog(@Context HttpServletRequest req, @QueryParam(value="startDate") String startDate, @QueryParam(value="endDate") String endDate) throws IOException {
 
         fillCriterialFromString(req.getQueryString());
         StringBuilder stringBuilder = new StringBuilder();
@@ -90,10 +96,8 @@ public class ConfigServices {
         }
         br.close();
         JSONObject jsonObj = new JSONObject(stringBuilder.toString());
-        //get date
-        //fm.insertGarantiasParametricValues(stringBuilder.toString());
+        return db.getLog(criterial);
 
-        return  "FIRMANDO";
     }
 
     /*OTHER METHOD*/
