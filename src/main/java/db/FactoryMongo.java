@@ -9,6 +9,7 @@ package db;
 import com.mongodb.*;
 import configuration.ConfigurationExample;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -66,12 +67,12 @@ public class FactoryMongo {
 
     public void insertLog(String c){
 
-        dbP.insertGarantias(getCollection(COLLECTION_LOG), curs, mongoClient, c);
+        dbP.insertLog(getCollection(COLLECTION_LOG), curs, mongoClient, c);
 
     }
 
-    public List<DBObject> getLog(HashMap criterial){
-        return dbP.getLogCriterial(getCollection(COLLECTION_LOG), curs, mongoClient, criterial);
+    public List<DBObject> getLog(Date startDate, Date endDate){
+        return dbP.getLogBetweenDate(getCollection(COLLECTION_LOG), curs, mongoClient,  startDate,endDate);
     }
 
 }

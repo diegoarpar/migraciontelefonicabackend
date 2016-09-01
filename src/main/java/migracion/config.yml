@@ -3,7 +3,7 @@ filePath: /home/diegoarpar/Downloads/
 urlUploadFile: http://104.196.61.177/document-manager/api/v2/documents/archive
 databaseuser: certi
 databasepass: certi123
-databasename: garantiasdb
+databasename: migracion
 databasurlserver: localhost
 
 defaultName: ${DW_DEFAULT_NAME:-Stranger}

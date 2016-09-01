@@ -18,10 +18,11 @@ import javax.ws.rs.core.MediaType;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Properties;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 /**
  * Created by root on 14/06/16.
@@ -52,7 +53,7 @@ public class ConfigServices {
         }
         br.close();
         JSONObject jsonObj = new JSONObject(stringBuilder.toString());
-        jsonObj.put("dateLog",new Date());
+        jsonObj.put("dateLog",ZonedDateTime.now().format( DateTimeFormatter.ISO_INSTANT ));
         db.insertLog(jsonObj.toString());
         adjuntarArchivos.AdjuntarArchivos(jsonObj,req.getHeader("authorization"), ConfigurationExample.UPLOAD_FILE_PATH+ jsonObj.get("name"), ConfigurationExample.URL_UPLOAD_FILE);
         return   jsonObj.toString();
@@ -61,7 +62,7 @@ public class ConfigServices {
     @POST
     //@Produces(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/insert-log")
+    @Path("/log")
     @PermitAll
     public String insertLog(@Context HttpServletRequest req) throws IOException {
 
@@ -75,7 +76,7 @@ public class ConfigServices {
         br.close();
         JSONObject jsonObj = new JSONObject(stringBuilder.toString());
 
-        jsonObj.put("dateLog",new Date());
+        jsonObj.put("dateLog", ZonedDateTime.now().format( DateTimeFormatter.ISO_INSTANT ));
         db.insertLog(jsonObj.toString());
 
         return  jsonObj.toString();
@@ -83,20 +84,25 @@ public class ConfigServices {
     @GET
     //@Produces(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/insert-log")
+    @Path("/log")
     @PermitAll
-    public List<DBObject> getLog(@Context HttpServletRequest req, @QueryParam(value="startDate") String startDate, @QueryParam(value="endDate") String endDate) throws IOException {
+    public String getLog(@Context HttpServletRequest req, @QueryParam(value="startDate") String startDate, @QueryParam(value="endDate") String endDate) throws IOException {
 
-        fillCriterialFromString(req.getQueryString());
-        StringBuilder stringBuilder = new StringBuilder();
-        BufferedReader br = new BufferedReader(new InputStreamReader(req.getInputStream()));
-        String read;
-        while((read=br.readLine()) != null) {
-            stringBuilder.append(read);
+        try {
+            fillCriterialFromString(req.getQueryString());
+            StringBuilder stringBuilder = new StringBuilder();
+            BufferedReader br = new BufferedReader(new InputStreamReader(req.getInputStream()));
+            String read;
+            while ((read = br.readLine()) != null) {
+                stringBuilder.append(read);
+            }
+            br.close();
+            DateFormat sourceFormat = new SimpleDateFormat("ddMMyyyy");
+            return db.getLog( sourceFormat.parse(startDate), sourceFormat.parse(endDate)).toString();
+        }catch (Exception e) {
+
+            return  "ERROR";
         }
-        br.close();
-        JSONObject jsonObj = new JSONObject(stringBuilder.toString());
-        return db.getLog(criterial);
 
     }
 
