@@ -54,7 +54,8 @@ import java.io.UnsupportedEncodingException;
 
             } catch (Exception e) {
                 e.printStackTrace();
+                return "Error "+ e.getMessage() + e.getCause();
             }
-            return "{response:ok}";
+            return "OK";
         }
     }
