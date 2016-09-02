@@ -47,7 +47,7 @@ import java.io.UnsupportedEncodingException;
                 post.setHeader("Accept-Language", "es-ES,es;q=0.8,en-US;q=0.5,en;q=0.3");
                 post.addHeader("Authorization",token);
                 post.setEntity(entity);
-                //System.out.println("Requesting : " + post.getRequestLine());
+                System.out.println("Requesting : " + post.getRequestLine());
                 responseBody = httpclient.execute(post, responseHandler);
                 //System.out.println("responseBody : " + responseBody);
 

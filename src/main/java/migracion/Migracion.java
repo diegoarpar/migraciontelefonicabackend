@@ -45,14 +45,14 @@ public class Migracion extends Application<ConfigurationExample> {
 
         e.jersey().register(ConfigServices.class);
 
-        e.jersey().register(new AuthDynamicFeature(
+        /*e.jersey().register(new AuthDynamicFeature(
         new OAuthCredentialAuthFilter.Builder<User>()
             .setAuthenticator(new Autenticator())
             .setAuthorizer(new Autorization())
             .setPrefix("Bearer")
-            .buildAuthFilter()));
+            .buildAuthFilter()));*/
 
-        e.jersey().register(RolesAllowedDynamicFeature.class);
+        //e.jersey().register(RolesAllowedDynamicFeature.class);
     }
 
     private void configureCors(Environment e) {

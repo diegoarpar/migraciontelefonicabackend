@@ -53,8 +53,9 @@ public class ConfigServices {
         }
         br.close();
         JSONObject jsonObj = new JSONObject(stringBuilder.toString());
-        jsonObj.put("dateLog",ZonedDateTime.now().format( DateTimeFormatter.ISO_INSTANT ));
-        db.insertLog(jsonObj.toString());
+        JSONObject jsonObj2 = new JSONObject(stringBuilder.toString());
+        jsonObj2.put("dateLog",ZonedDateTime.now().format( DateTimeFormatter.ISO_INSTANT ));
+        db.insertLog(jsonObj2.toString());
         adjuntarArchivos.AdjuntarArchivos(jsonObj,req.getHeader("authorization"), ConfigurationExample.UPLOAD_FILE_PATH+ jsonObj.get("name"), ConfigurationExample.URL_UPLOAD_FILE);
         return   jsonObj.toString();
     }
