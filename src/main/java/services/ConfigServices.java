@@ -101,8 +101,12 @@ public class ConfigServices {
                 stringBuilder.append(read);
             }
             br.close();
-            DateFormat sourceFormat = new SimpleDateFormat("yyyy-MM-dd");
-            return db.getLog( sourceFormat.parse(startDate), sourceFormat.parse(endDate)).toString();
+            DateFormat sourceFormatS = new SimpleDateFormat("yyyy-MM-dd");
+            DateFormat sourceFormatE = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
+            TimeZone tz = TimeZone.getTimeZone("UTC");
+            sourceFormatE.setTimeZone(tz);
+            sourceFormatS.setTimeZone(tz);
+            return db.getLog( sourceFormatS.parse(startDate), sourceFormatE.parse(endDate)).toString();
         }catch (Exception e) {
 
             return  "ERROR";
