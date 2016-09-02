@@ -100,7 +100,7 @@ public class ConfigServices {
                 stringBuilder.append(read);
             }
             br.close();
-            DateFormat sourceFormat = new SimpleDateFormat("ddMMyyyy");
+            DateFormat sourceFormat = new SimpleDateFormat("yyyy-MM-dd");
             return db.getLog( sourceFormat.parse(startDate), sourceFormat.parse(endDate)).toString();
         }catch (Exception e) {
 
