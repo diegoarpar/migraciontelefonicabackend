@@ -13,6 +13,7 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONObject;
 
+import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -54,7 +55,8 @@ import java.io.UnsupportedEncodingException;
 
             } catch (Exception e) {
                 e.printStackTrace();
-                return "Error "+ e.getMessage() + e.getCause();
+                Response.status(Response.Status.INTERNAL_SERVER_ERROR);
+                return "Error "+ e.getMessage() + e.getCause()+ e.toString();
             }
             return "OK";
         }
