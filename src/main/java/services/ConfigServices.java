@@ -60,7 +60,7 @@ public class ConfigServices {
         jsonObj2.put("returnUploadDocument",adjuntarArchivos.AdjuntarArchivos(jsonObj,req.getHeader("authorization"), ConfigurationExample.UPLOAD_FILE_PATH+ jsonObj.get("name"), ConfigurationExample.URL_UPLOAD_FILE));
 
         db.insertLog(jsonObj2.toString());
-        return   jsonObj.toString();
+        return   jsonObj2.toString();
     }
 
     @POST
