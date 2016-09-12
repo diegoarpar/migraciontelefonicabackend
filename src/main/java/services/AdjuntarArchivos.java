@@ -30,7 +30,7 @@ import java.io.UnsupportedEncodingException;
         private File file;
         private HttpPost post;
         private ResponseHandler<String> responseHandler = new BasicResponseHandler();
-        public String AdjuntarArchivos(JSONObject json, String token, String ubicacionArchivo, String urlAdjuntar) throws UnsupportedEncodingException, IOException {
+        public String AdjuntarArchivos(JSONObject json, String token, String ubicacionArchivo, String urlAdjuntar) throws Exception {
             try {
 
                 token=token.replace("Bearer ","");
@@ -56,7 +56,7 @@ import java.io.UnsupportedEncodingException;
             } catch (Exception e) {
                 e.printStackTrace();
                 Response.status(Response.Status.INTERNAL_SERVER_ERROR);
-                return "Error "+ e.getMessage() + e.getCause()+ e.toString();
+                throw new Exception("Error "+ e.getMessage() + e.getCause()+ e.toString());
             }
             return "OK";
         }

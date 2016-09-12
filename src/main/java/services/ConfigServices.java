@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -42,7 +43,7 @@ public class ConfigServices {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/insert-file")
     @PermitAll
-    public String insertFile(@Context HttpServletRequest req) throws IOException {
+    public String insertFile(@Context HttpServletRequest req) throws Exception {
 
         fillCriterialFromString(req.getQueryString());
         StringBuilder stringBuilder = new StringBuilder();
@@ -55,11 +56,21 @@ public class ConfigServices {
         JSONObject jsonObj = new JSONObject(stringBuilder.toString());
         JSONObject jsonObj2 = new JSONObject(stringBuilder.toString());
         jsonObj2.put("dateLog",ZonedDateTime.now().format( DateTimeFormatter.ISO_INSTANT ));
-        jsonObj2.put("eventLog","Upload_Document");
 
-        jsonObj2.put("returnUploadDocument",adjuntarArchivos.AdjuntarArchivos(jsonObj,req.getHeader("authorization"), ConfigurationExample.UPLOAD_FILE_PATH+ jsonObj.get("name"), ConfigurationExample.URL_UPLOAD_FILE));
 
-        db.insertLog(jsonObj2.toString());
+        try {
+            jsonObj2.put("eventLog","Success_Upload_Document");
+            jsonObj2.put("SuccessUploadDocument",adjuntarArchivos.AdjuntarArchivos(jsonObj,req.getHeader("authorization"), ConfigurationExample.UPLOAD_FILE_PATH+ jsonObj.get("name"), ConfigurationExample.URL_UPLOAD_FILE));
+            db.insertLog(jsonObj2.toString());
+        } catch (Exception e) {
+            jsonObj2.put("eventLog","Failed_Upload_Document");
+            jsonObj2.put("FailedUploadDocument",e.getMessage());
+            db.insertLog(jsonObj2.toString());
+            Response.status(Response.Status.INTERNAL_SERVER_ERROR);
+            throw new Exception(jsonObj2.toString());
+        }
+
+
         return   jsonObj2.toString();
     }
 
