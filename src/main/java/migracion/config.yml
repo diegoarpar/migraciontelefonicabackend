@@ -1,5 +1,6 @@
 template: Hello, %s!
-filePath: /home/itec/Downloads/
+#filePath: /home/itec/Downloads/
+filePath: /data/migracion/
 urlUploadFile: http://104.196.61.177/document-manager/api/v2/documents/archive
 databaseuser: certi
 databasepass: certi123

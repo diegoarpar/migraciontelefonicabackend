@@ -21,9 +21,11 @@ import java.io.UnsupportedEncodingException;
 
 /**
  * Created by root on 16/07/16.
+ * Munkys APPS copyright
+ * CERTICAMARA TELEFONICA
  */
 
-    public class AdjuntarArchivos {
+public class AdjuntarArchivos {
         private HttpClient httpclient = new DefaultHttpClient();
         private String responseBody="";
         private  HttpEntity entity;

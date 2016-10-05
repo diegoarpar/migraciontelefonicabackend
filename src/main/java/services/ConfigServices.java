@@ -26,20 +26,24 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
- * Created by root on 14/06/16.
+ * Created by alejandro on 14/06/16.
+ * Munkys APPS copyright
+ * CERTICAMARA TELEFONICA
  */
 
 @Path("/migracion/docs")
 @Produces(MediaType.APPLICATION_JSON)
 
-
-
 public class ConfigServices {
+
     HashMap<String, String> criterial= new HashMap<>();
+
+    /**/
     private AdjuntarArchivos adjuntarArchivos= new AdjuntarArchivos();
+
+
     private FactoryMongo db = new FactoryMongo();
     @POST
-    //@Produces(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/insert-file")
     @PermitAll
@@ -60,7 +64,11 @@ public class ConfigServices {
 
         try {
             jsonObj2.put("eventLog","Success_Upload_Document");
-            jsonObj2.put("SuccessUploadDocument",adjuntarArchivos.AdjuntarArchivos(jsonObj,req.getHeader("authorization"), ConfigurationExample.UPLOAD_FILE_PATH+ jsonObj.get("name"), ConfigurationExample.URL_UPLOAD_FILE));
+            String adjuntarString = adjuntarArchivos.AdjuntarArchivos(
+                    jsonObj, req.getHeader("authorization"),
+                    ConfigurationExample.UPLOAD_FILE_PATH + jsonObj.get("name"),
+                    ConfigurationExample.URL_UPLOAD_FILE);
+            jsonObj2.put("SuccessUploadDocument",adjuntarString);
             db.insertLog(jsonObj2.toString());
         } catch (Exception e) {
             jsonObj2.put("eventLog","Failed_Upload_Document");
@@ -75,7 +83,6 @@ public class ConfigServices {
     }
 
     @POST
-    //@Produces(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/log")
     @PermitAll
@@ -97,7 +104,6 @@ public class ConfigServices {
         return  jsonObj.toString();
     }
     @GET
-    //@Produces(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/log")
     @PermitAll
