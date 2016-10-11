@@ -60,10 +60,13 @@ public class ConfigServices {
         JSONObject jsonObj = new JSONObject(stringBuilder.toString());
         JSONObject jsonObj2 = new JSONObject(stringBuilder.toString());
         jsonObj2.put("dateLog",ZonedDateTime.now().format( DateTimeFormatter.ISO_INSTANT ));
-
-
+        String fileName = jsonObj.getString("fileName");
+        jsonObj.remove("fileName");
+        jsonObj2.remove("fileName");
         try {
             jsonObj2.put("eventLog","Success_Upload_Document");
+            if(fileName!=null)
+                jsonObj2.put("fileName",fileName);
             String adjuntarString = adjuntarArchivos.AdjuntarArchivos(
                     jsonObj, req.getHeader("authorization"),
                     ConfigurationExample.UPLOAD_FILE_PATH + jsonObj.get("name"),
@@ -72,6 +75,8 @@ public class ConfigServices {
             db.insertLog(jsonObj2.toString());
         } catch (Exception e) {
             jsonObj2.put("eventLog","Failed_Upload_Document");
+            if(fileName!=null)
+                jsonObj2.put("fileName",fileName);
             jsonObj2.put("FailedUploadDocument",e.getMessage());
             db.insertLog(jsonObj2.toString());
             Response.status(Response.Status.INTERNAL_SERVER_ERROR);
@@ -107,7 +112,7 @@ public class ConfigServices {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/log")
     @PermitAll
-    public String getLog(@Context HttpServletRequest req, @QueryParam(value="startDate") String startDate, @QueryParam(value="endDate") String endDate) throws IOException {
+    public String getLog(@Context HttpServletRequest req, @QueryParam(value="startDate") String stringStartDate, @QueryParam(value="endDate") String stringEndDate) throws IOException {
 
         try {
             fillCriterialFromString(req.getQueryString());
@@ -120,10 +125,20 @@ public class ConfigServices {
             br.close();
             DateFormat sourceFormatS = new SimpleDateFormat("yyyy-MM-dd");
             DateFormat sourceFormatE = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
+
             TimeZone tz = TimeZone.getTimeZone("UTC");
             sourceFormatE.setTimeZone(tz);
             sourceFormatS.setTimeZone(tz);
-            return db.getLog( sourceFormatS.parse(startDate), sourceFormatE.parse(endDate)).toString();
+
+            Calendar c = Calendar.getInstance();
+            c.setTime(sourceFormatS.parse(stringEndDate));
+            c.add(Calendar.DATE, 1);  // number of days to add
+            Date endDate = c.getTime();
+
+            Date startDate = sourceFormatS.parse(stringStartDate);
+
+
+            return db.getLog(startDate, endDate).toString();
         }catch (Exception e) {
 
             return  "ERROR";
