@@ -26,15 +26,16 @@ import java.io.UnsupportedEncodingException;
  */
 
 public class AdjuntarArchivos {
-        private static HttpClient httpclient = new DefaultHttpClient();
+        private static HttpClient httpclient;
         private String responseBody="";
         private static HttpEntity entity;
         private static File file;
         private static HttpPost post;
-        private static ResponseHandler<String> responseHandler = new BasicResponseHandler();
+        private static ResponseHandler<String> responseHandler;
         public String AdjuntarArchivos(JSONObject json, String token, String ubicacionArchivo, String urlAdjuntar) throws Exception {
             try {
-
+                httpclient = SingletonAdjuntarArchivos.getHttpclient();
+                responseHandler = SingletonAdjuntarArchivos.getResponseHandler();
                 token=token.replace("Bearer ","");
                 file = new File(ubicacionArchivo);
                 json.put("name",file.getName());
