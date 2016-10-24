@@ -54,7 +54,7 @@ public class AdjuntarArchivos {
                 System.out.println("Requesting : " + post.getRequestLine());
                 responseBody = httpclient.execute(post, responseHandler);
                 //System.out.println("responseBody : " + responseBody);
-
+                httpclient.getConnectionManager().shutdown();
 
             } catch (Exception e) {
                 e.printStackTrace();
