@@ -15,9 +15,8 @@ public class SingletonAdjuntarArchivos {
     private static ResponseHandler<String> responseHandler;
 
     public static HttpClient getHttpclient() {
-        if(httpclient == null){
-            httpclient = new DefaultHttpClient();
-        }
+        httpclient = null;
+        httpclient = new DefaultHttpClient();
         return httpclient;
     }
 
