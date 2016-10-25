@@ -20,6 +20,8 @@ import java.util.List;
 public class FactoryMongo {
     private static final String COLLECTION_LOG= "logs";
 
+    public static FactoryMongo factoryMongo;
+
     private MongoClient mongoClient =null;
     private DB database =null ;
     private DBCursor curs;
@@ -27,6 +29,13 @@ public class FactoryMongo {
     DBMongo dbP= new DBMongo();
 
     public FactoryMongo() {
+    }
+
+    public static FactoryMongo FactoryMongoSingleton(){
+        if(factoryMongo == null){
+            factoryMongo = new FactoryMongo();
+        }
+        return factoryMongo;
     }
 
     public MongoClient getMongoClient(String user, String pass, String url, String dataBase){
@@ -72,7 +81,7 @@ public class FactoryMongo {
     }
 
     public List<DBObject> getLog(Date startDate, Date endDate){
-        return dbP.getLogBetweenDate(getCollection(COLLECTION_LOG), curs, mongoClient,  startDate,endDate);
+        return dbP.getLogBetweenDate(getCollection(COLLECTION_LOG), curs, mongoClient,  startDate, endDate);
     }
 
 }

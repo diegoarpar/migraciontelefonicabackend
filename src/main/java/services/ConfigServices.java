@@ -11,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.annotation.security.PermitAll;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -33,16 +34,18 @@ import java.util.*;
 
 @Path("/migracion/docs")
 @Produces(MediaType.APPLICATION_JSON)
-
 public class ConfigServices {
 
     HashMap<String, String> criterial= new HashMap<>();
 
     /**/
-    private AdjuntarArchivos adjuntarArchivos= new AdjuntarArchivos();
+    private AdjuntarArchivos adjuntarArchivos = AdjuntarArchivos.AdjuntarArchivosSingleton();
 
 
-    private FactoryMongo db = new FactoryMongo();
+    private FactoryMongo db = FactoryMongo.FactoryMongoSingleton();
+
+
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/insert-file")
